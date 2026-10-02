@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Codex Pulse</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header class="app-header">
+      <div class="brand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 16h4l3-8 4 12 3-8h4"/></svg><h1>Codex Pulse</h1></div>
+      <button id="theme" class="icon-button" type="button" aria-label="切换明暗主题" title="切换明暗主题">◐</button>
+    </header>
+    <div class="chat-scope"><div class="chat-heading"><label id="scope-label" class="eyebrow" for="chat-picker">选择聊天</label><strong id="chat-name">请选择要查看的聊天</strong></div><select id="chat-picker" aria-label="选择监测的聊天"><option value="">选择聊天</option></select><span id="demo-badge" class="tag" hidden>演示数据</span></div>
+    <details id="source-settings" class="source-settings"><summary>数据目录 <span id="source-status">检查中</span></summary><form id="source-form"><label for="source-path">Codex 数据文件夹</label><div class="source-controls"><input id="source-path" type="text" placeholder="例如 ~/.codex" autocomplete="off" spellcheck="false"><button id="source-save" type="submit">使用此目录</button><button id="source-rescan" type="button">重新检测</button></div></form><p id="source-message" role="status"></p></details>
+    <div id="error" class="error" role="alert" hidden></div>
+    <section id="unbound" class="unbound" hidden><h2 id="detect-title">选择要查看的聊天</h2><p id="detect-note">从上方菜单选择一条聊天。</p></section>
+    <div id="dashboard" hidden>
+      <section class="speed-panel" aria-label="模型响应速度">
+        <div class="section-title"><h2>响应速度</h2><span id="status" class="status"><i></i><span>连接中</span></span></div>
+        <div class="speed-metrics"><div class="main-speed"><strong id="speed">—</strong><span>Token/s</span></div><div class="secondary-metric"><span>近 10 次均速</span><strong id="average">—</strong></div><div class="secondary-metric"><span>模型耗时</span><strong id="duration">—</strong></div></div>
+        <div class="model-line"><span id="model">等待模型数据</span><span id="effort"></span><span id="activity"></span></div>
+        <div class="chart-wrap"><svg id="chart" viewBox="0 0 600 150" role="img" aria-label="最近模型响应速度趋势"></svg><p id="chart-empty" class="empty" hidden>等待第一条完整响应</p></div>
+        <div class="chart-foot"><span id="sample-count">最近响应</span><span id="plain-speed"></span></div>
+      </section>
+      <section class="usage-panel" aria-label="当前聊天 Token 用量">
+        <div class="section-title"><h2>Token 用量</h2><div class="scope-switch" role="group" aria-label="统计范围"><button id="scope-turn" type="button" aria-pressed="false">最近一条消息</button><button id="scope-chat" type="button" aria-pressed="true">整个聊天</button></div></div>
+        <p id="usage-range" class="usage-range">这条聊天从开始到现在，所有消息的累计消耗。</p>
+        <div class="usage-total-line"><span id="usage-label">整个聊天累计消耗</span><strong id="usage-total">—</strong><small>Token</small></div>
+        <dl class="usage-grid"><div><dt>输入</dt><dd id="usage-input">—</dd></div><div><dt>缓存输入</dt><dd id="usage-cached">—</dd></div><div><dt>输出</dt><dd id="usage-output">—</dd></div><div><dt>思考输出</dt><dd id="usage-reasoning">—</dd></div></dl>
+        <p class="usage-note">缓存计入输入，思考计入输出；合计 = 输入 + 输出。</p>
+      </section>
+      <section class="detail-section" aria-label="Token 使用明细">
+        <div class="detail-toolbar"><div class="detail-tabs" role="tablist" aria-label="明细类型"><button id="turn-tab" role="tab" type="button" aria-selected="true" aria-controls="history-panel">按消息汇总</button><button id="request-tab" role="tab" type="button" aria-selected="false" aria-controls="history-panel" tabindex="-1">模型调用明细</button></div><span id="detail-count"></span></div>
+        <p id="history-range" class="history-range">每一行对应你发的一条消息，合计包含处理这条消息时的所有模型调用。</p>
+        <div id="history-panel" role="tabpanel" aria-labelledby="turn-tab"><div class="table-wrap"><table><thead><tr><th scope="col" class="expand-column"></th><th id="time-header" scope="col">开始处理</th><th id="middle-header" scope="col">模型调用</th><th scope="col">输出 Token</th><th scope="col">合计 Token</th></tr></thead><tbody id="history-rows"></tbody></table></div><p id="history-empty" class="empty" hidden>等待用量记录</p></div>
+        <p class="detail-note">点击箭头查看输入、缓存、输出和思考。k = 千，M = 百万；悬停数字可看完整值。</p>
+      </section>
+    </div>
+    <footer><span id="updated">仅在本机读取</span><button id="stop-monitor" type="button">关闭监测</button></footer>
+  </main>
+</body>
+</html>
